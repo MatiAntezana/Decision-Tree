@@ -1,9 +1,13 @@
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from collections import Counter
 
 def plot_confusion_matrix(matrix):
+    """
+    Plots the confusion matrix.
+
+    Args:
+        matrix (array_like): The confusion matrix to be plotted.
+    """
     plt.imshow(matrix, interpolation="nearest", cmap=plt.cm.Blues)
     plt.title("Confusion Matrix")
     plt.colorbar()
@@ -25,6 +29,16 @@ def plot_confusion_matrix(matrix):
     plt.show()
 
 def curve_ROC(proba, y_trues):
+    """
+    Calculates the True Positive Rate (TPR) and False Positive Rate (FPR) for various threshold values.
+
+    Args:
+        proba (array_like): Predicted probabilities for positive class.
+        y_trues (array_like): True labels.
+
+    Returns:
+        list: Lists of True Positive Rates (TPRs) and False Positive Rates (FPRs) for different threshold values.
+    """
     list_umbrals = np.linspace(0,1,100)
     list_TPR = []
     list_FPR = []
@@ -37,42 +51,15 @@ def curve_ROC(proba, y_trues):
 
     return [list_TPR, list_FPR]
 
-def reed_data(name_file):
-    data = pd.read_csv(name_file)
-    V1 = data["V1"]
-    V2 = data["V2"]
-    V3 = data["V3"]
-    V4 = data["V4"]
-    V5 = data["V5"]
-    V6 = data["V6"]
-    V7 = data["V7"]
-    V8 = data["V8"]
-    V9 = data["V9"]
-    V10 = data["V10"]
-    V11 = data["V11"]
-    V12 = data["V12"]
-    V13 = data["V13"]
-    V14 = data["V14"]
-    V15 = data["V15"]
-    V16 = data["V16"]
-    V17 = data["V17"]
-    V18 = data["V18"]
-    V19 = data["V19"]
-    V20 = data["V20"]
-    V21 = data["V21"]
-    V22 = data["V22"]
-    V23 = data["V23"]
-    V24 = data["V24"]
-    V25 = data["V25"]
-    V26 = data["V26"]
-    V27 = data["V27"]
-    V28 = data["V28"]
-    Class = data["Class"]
-    Log_Amount = data["Log Amount"]
-    size = len(Log_Amount)
-    return np.array([V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22, V23, V24, V25, V26, V27, V28, Log_Amount, Class]).T, size
-
 def plot_roc_curve(list_TPR, list_FPR, auc):
+    """
+    Plots the Receiver Operating Characteristic (ROC) curve.
+
+    Args:
+        list_TPR (array_like): List of True Positive Rates.
+        list_FPR (array_like): List of False Positive Rates.
+        auc (float): Area Under the Curve (AUC) value.
+    """
     plt.figure()
     plt.plot(list_FPR, list_TPR, color="darkorange", lw=2)
     plt.plot([0, 1], [0, 1], color="navy", label=f"AUC = {auc}", lw=2, linestyle="--")
@@ -84,6 +71,13 @@ def plot_roc_curve(list_TPR, list_FPR, auc):
     plt.show()
 
 def plot_PRC_curve(list_recall, list_precision):
+    """
+    Plots the Precision-Recall Curve (PRC).
+
+    Args:
+        list_recall (array_like): List of recall values.
+        list_precision (array_like): List of precision values.
+    """
     plt.figure()
     plt.plot(list_recall, list_precision, linestyle="-")
     plt.xlabel("Recall")
@@ -93,49 +87,17 @@ def plot_PRC_curve(list_recall, list_precision):
     plt.title("PRC Curve")
     plt.show()
 
-def max_min_data(data, initial_type, final_type):
-    list_max = []
-    list_min = []
-    for index in range(initial_type, final_type):
-        list_max.append(np.max(data[index]))
-        list_min.append(np.min(data[index]))
-    return list_max, list_min
-
-def norm_data(X, index,  list_max, list_min, initial_type, final_type):
-    for index in range(initial_type, final_type):
-        X[index] = (X[index] - list_min[index]) / (list_max[index] - list_min[index])
-    return X
-
-def norm_dataset(dataset, size, initial_type, final_type):
-    list_max, list_min = max_min_data(dataset.T, initial_type, final_type)
-
-    for index in range(size):
-        dataset[index] = norm_data(dataset[index], index, list_max, list_min, initial_type, final_type)
-
-    return dataset
-
-def div_x_y(list_data):
-    list_x = []
-    list_y = []
-    for data in list_data:
-        list_x.append(data[0:29])
-        list_y.append(data[29])
-    return np.array(list_x), np.array(list_y)
-
-def build_set_data(data, indexs_train, indexs_val):
-    set_train = [data[index] for index in indexs_train]
-    set_val = [data[index] for index in indexs_val]
-
-    return set_train, set_val 
-
-def func_sigmoid(data):
-    return 1/(1+np.exp(-data))
-
-def derivate_func_sigmoid(data):
-    sig = lambda data: 1/(1+np.exp(-data))
-    return sig(data)*(1-sig(data))
-
 def compare_result_final(predics, real_values):
+    """
+    Compares predicted values with actual values and computes TP, FP, TN, FN.
+
+    Args:
+        predics (array_like): Predicted values.
+        real_values (array_like): Actual values.
+
+    Returns:
+        tuple: TP, FP, TN, FN.
+    """
     TP = sum(1 for p, t in zip(predics, real_values) if p == 1 and t == 1)
     FP = sum(1 for p, t in zip(predics, real_values) if p == 1 and t == 0)
     TN = sum(1 for p, t in zip(predics, real_values) if p == 0 and t == 0)
@@ -143,6 +105,17 @@ def compare_result_final(predics, real_values):
     return TP, FP, TN, FN
 
 def auc_roc(lista_A, list_B, sorted_true):
+    """
+    Calculates the Area Under the Curve (AUC) for the ROC curve.
+
+    Args:
+        lista_A (array_like): List of values for the first axis (e.g., False Positive Rate).
+        list_B (array_like): List of values for the second axis (e.g., True Positive Rate).
+        sorted_true (bool): Indicates whether the points are sorted.
+
+    Returns:
+        float: The AUC value.
+    """
     if sorted_true == True:
         points = sorted(zip(list_B, lista_A), key=lambda x: x[0])
     else:
@@ -159,9 +132,29 @@ def auc_roc(lista_A, list_B, sorted_true):
     return auc
 
 def accuracy(cant_successes, cant_predict):
+    """
+    Computes the accuracy.
+
+    Args:
+        cant_successes (int): Number of successful predictions.
+        cant_predict (int): Total number of predictions.
+
+    Returns:
+        float: Accuracy.
+    """
     return cant_successes / cant_predict
 
 def presicion(TP, FP):
+    """
+    Computes the precision.
+
+    Args:
+        TP (int): True positives.
+        FP (int): False positives.
+
+    Returns:
+        float: Precision.
+    """
     sum_ = TP + FP
     if sum_ != 0:
         return TP / sum_
@@ -169,9 +162,31 @@ def presicion(TP, FP):
         return 0
 
 def recall(TP, FN):
+    """
+    Computes the recall.
+
+    Args:
+        TP (int): True positives.
+        FN (int): False negatives.
+
+    Returns:
+        float: Recall.
+    """
     return TP / (TP + FN)
 
 def calc_TPR_FPR(TP, FP, TN, FN):
+    """
+    Calculates True Positive Rate (TPR) and False Positive Rate (FPR).
+
+    Args:
+        TP (int): True positives.
+        FP (int): False positives.
+        TN (int): True negatives.
+        FN (int): False negatives.
+
+    Returns:
+        tuple: TPR and F
+    """
     TPR = TP / (TP + FN)
     FPR = FP / (FP + TN)
     return TPR, FPR  
