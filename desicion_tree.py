@@ -121,9 +121,9 @@ class DecisionTree:
         Finds the best split for a set of features.
 
         Args:
-            X (array_like): Feature matrix.
-            Y (array_like): Label matrix.
-            feat_idxs (array_like): Indices of the features to consider.
+            X (numpy.array): Feature matrix.
+            Y (numpy.array): Label matrix.
+            feat_idxs (numpy.array): Indices of the features to consider.
 
         Returns:
             tuple: Index of the feature for the best split and split threshold.
@@ -151,7 +151,7 @@ class DecisionTree:
         Makes predictions for input samples.
 
         Args:
-            X (array_like): Feature matrix of input samples.
+            X (numpy.array): Feature matrix of input samples.
 
         Returns:
             array_like: Vector of predicted labels for the input samples.
@@ -163,7 +163,7 @@ class DecisionTree:
         Performs the recursive prediction stage of the tree.
 
         Args:
-            X (array_like): Feature vector of an input sample.
+            X (numpy.array): Feature vector of an input sample.
             node (Node): Current node in the prediction stage.
 
         Returns:
@@ -183,8 +183,8 @@ class DecisionTree:
         Expands the decision tree recursively.
 
         Args:
-            X (array_like): Feature matrix.
-            Y (array_like): Label matrix.
+            X (numpy.array): Feature matrix.
+            Y (numpy.array): Label matrix.
             depth (int): Current depth of the tree.
 
         Returns:
